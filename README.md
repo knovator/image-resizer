@@ -48,7 +48,7 @@
 ## About The Project
 
 - `@knovator/image-resizer` is an express middleware that generates images of size and format passed in **URL** using `sharp` package. 
-- `@knovator/image-resizer` takes input of `public` folder path and when it receives a request it checks if the requested image exists in the `public` folder. If it doesn't, it generates the image in *resolution* folder and serves it.
+- `@knovator/image-resizer` takes input of `public` folder path and when it receives a request it checks if the requested image exists in the `public` folder. If it doesn't, it generates the image in *resolution* folder.
 - *resolution* is passed in the **URL** as `width` and `height` parameters. For example, in `/images/1200x850/image.jpg` URL `1200` is width and `850` is height. It accepts *resolution* from 2 digits to 6 digits..
 - Image generation done in following setps:
   - Check if the image exists in the `public` folder by removing resolution. For example
@@ -56,6 +56,7 @@
   - If the image doesn't exist, it generates the image in  specified *resolution* folder.
 - It also generates images of different format in *resolution* folder if the image of that format is not exists. 
   - For example `/images/800x800/image.jpg` image request will be generated as `/images/800x800/image.jpg` by taking `/images/image.(jpg|png|webp|jpeg)` as input.
+> It's required to use `resize` middleware before using `express.static` middleware.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -100,6 +101,25 @@
   app.use(resize(__dirname + '/public', { extensions: ['.png', '.jpg', '.jpeg', '.webp'] }));
   ```
 
+### Example in app.js file
+```js
+const express = require('express');
+const app = express();
+const PORT = 8080;
+const { resize } = require('@knovator/image-resize');
+
+app.get('/status', (_req, res) => {
+    res.send('All Okay');
+});
+
+app.use(resize(__dirname + '/public'));
+app.use(express.static(__dirname + '/public'));
+
+app.listen(PORT, () => {
+    console.log(`App started on ${PORT}`);
+});
+```
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -107,7 +127,8 @@
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Support for image hosted in s3 bucket.
+- [ ] Support for image hosted in s3 bucket
+- [ ] Add test cases
 
 See the [open issues](https://github.com/knovator/image-resizer/issues) for a full list of proposed features (and known issues).
 
