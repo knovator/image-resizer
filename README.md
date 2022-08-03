@@ -1,103 +1,148 @@
-# DTS User Guide
+<div id="top"></div>
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with DTS. Let’s get you oriented with what’s here and how to use it.
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
 
-> This DTS setup is meant for developing libraries (not apps!) that can be published to NPM. If you’re looking to build a Node app, you could use `ts-node-dev`, plain `ts-node`, or simple `tsc`.
+<h3 align="center">@knovator/image-resizer</h3>
+  <p align="center">
+    Express middleware for resizing images.
+    <br />
+    <a href="https://github.com/knovator/image-resizer"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/knovator/image-resizer">View Demo</a>
+    ·
+    <a href="https://github.com/knovator/image-resizer/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/knovator/image-resizer/issues">Request Feature</a>
+  </p>
+</div>
 
-> If you’re new to TypeScript, checkout [this handy cheatsheet](https://devhints.io/typescript)
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
 
-## Commands
 
-DTS scaffolds your new library inside `/src`.
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-To run DTS, use:
+- `@knovator/image-resizer` is an express middleware that generates images of size and format passed in **URL** using `sharp` package. 
+- `@knovator/image-resizer` takes input of `public` folder path and when it receives a request it checks if the requested image exists in the `public` folder. If it doesn't, it generates the image in *resolution* folder and serves it.
+- *resolution* is passed in the **URL** as `width` and `height` parameters. For example, in `/images/1200x850/image.jpg` URL `1200` is width and `850` is height. It accepts *resolution* from 2 digits to 6 digits..
+- Image generation done in following setps:
+  - Check if the image exists in the `public` folder by removing resolution. For example
+    - `/images/800x800/image.jpg` will be checked in `/images/image.(jpg|png|webp|jpeg)`.
+  - If the image doesn't exist, it generates the image in  specified *resolution* folder.
+- It also generates images of different format in *resolution* folder if the image of that format is not exists. 
+  - For example `/images/800x800/image.jpg` image request will be generated as `/images/800x800/image.jpg` by taking `/images/image.(jpg|png|webp|jpeg)` as input.
 
-```bash
-npm start # or yarn start
-```
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
 
-To do a one-off build, use `npm run build` or `yarn build`.
+### Built With
 
-To run tests, use `npm test` or `yarn test`.
+* [sharp](https://www.npmjs.com/package/sharp)
+* [glob](https://www.npmjs.com/package/glob)
 
-## Configuration
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
+<!-- GETTING STARTED -->
+## Getting Started
 
-### Jest
+`@knovator/image-resizer` is built as an express middleware, so NodeJS application setup with expressjs is required to start.
 
-Jest tests are set up to run with `npm test` or `yarn test`.
+### Installation
 
-### Bundle Analysis
+1. Install the package
+   ```sh
+   npm i @knovator/image-resizer
+   # or
+   yarn add @knovator/image-resizer
+   ```
 
-[`size-limit`](https://github.com/ai/size-limit) is set up to calculate the real cost of your library with `npm run size` and visualize the bundle with `npm run analyze`.
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-#### Setup Files
 
-This is the folder structure we set up for you:
+<!-- USAGE EXAMPLES -->
+## Usage
 
-```txt
-/src
-  index.ts        # EDIT THIS
-/test
-  index.test.ts   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
-```
+- Usage of `@knovator/image-resizer` is simple. It takes input of public folder path similar to `express.static` middleware.For example,
+  ```js
+  const { resize } = require('@knovator/image-resizer');
 
-### Rollup
+  app.use(resize(__dirname + '/public'));
+  ```
+- `@knovator/image-resizer` considers `jpg`, `png`, `webp` and `jpeg` image formats. if you want to use other formats, you can pass it in the `extensions` parameter. For example,
+  ```js
+  const { resize } = require('@knovator/image-resizer');
 
-DTS uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
+  app.use(resize(__dirname + '/public', { extensions: ['.png', '.jpg', '.jpeg', '.webp'] }));
+  ```
 
-### TypeScript
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
 
-## Continuous Integration
 
-### GitHub Actions
+<!-- ROADMAP -->
+## Roadmap
 
-Two actions are added by default:
+- [ ] Support for image hosted in s3 bucket.
 
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
+See the [open issues](https://github.com/knovator/image-resizer/issues) for a full list of proposed features (and known issues).
 
-## Optimizations
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-Please see the main `dts` [optimizations docs](https://github.com/weiran-zsd/dts-cli#optimizations). In particular, know that you can take advantage of development-only optimizations:
 
-```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
+<!-- CONTRIBUTING -->
+## Contributing
 
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
-}
-```
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-You can also choose to install and use [invariant](https://github.com/weiran-zsd/dts-cli#invariant) and [warning](https://github.com/weiran-zsd/dts-cli#warning) functions.
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
 
-## Module Formats
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-CJS, ESModules, and UMD module formats are supported.
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
 
-## Named Exports
 
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
+<!-- LICENSE -->
+## License
 
-## Including Styles
+Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-There are many ways to ship styles, including with CSS-in-JS. DTS has no opinion on this, configure how you like.
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
 
-## Publishing to NPM
+<!-- CONTACT -->
+## Contact
 
-We recommend using [np](https://github.com/sindresorhus/np).
+Knovator Technologies
+- Twitter [@knovator](https://twitter.com/knovator)
+- Web [https://knovator.com/](https://knovator.com/)
