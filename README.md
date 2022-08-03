@@ -49,7 +49,7 @@
 
 - `@knovator/image-resizer` is an express middleware that generates images of size and format passed in **URL** using `sharp` package. 
 - `@knovator/image-resizer` takes input of `public` folder path and when it receives a request it checks if the requested image exists in the `public` folder. If it doesn't, it generates the image in *resolution* folder and serves it.
-- *resolution* is passed in the **URL** as `width` and `height` parameters. For example, in `/images/1200x850/image.jpg` URL `1200` is width and `850` is height.
+- *resolution* is passed in the **URL** as `width` and `height` parameters. For example, in `/images/1200x850/image.jpg` URL `1200` is width and `850` is height. It accepts *resolution* from 2 digits to 6 digits..
 - Image generation done in following setps:
   - Check if the image exists in the `public` folder by removing resolution. For example
     - `/images/800x800/image.jpg` will be checked in `/images/image.(jpg|png|webp|jpeg)`.
