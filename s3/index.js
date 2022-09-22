@@ -6,20 +6,20 @@ exports.handler = async (event, context, callback) => {
         if (!prefixBaseUrl.endsWith('/')) prefixBaseUrl += '/';
         let s3ImageUrl = event.path;
         let responseUrl = await resizer(s3ImageUrl);
-        
-        if(responseUrl) {
+
+        if (responseUrl) {
             responseUrl = prefixBaseUrl + responseUrl;
-		    let redirectResponse = {
-                "statusCode": 302,
-                "headers": {
+            let redirectResponse = {
+                statusCode: 302,
+                headers: {
                     Location: responseUrl,
-                }
+                },
             };
             return callback(null, redirectResponse);
         }
 
-        callback(new Error("Image not found"));
+        callback(new Error('Image not found'));
     } catch (e) {
-        return e.message;
+        callback(e.message);
     }
-}
+};

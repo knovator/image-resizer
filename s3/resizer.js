@@ -63,6 +63,7 @@ function getFilePathsToCheck(filePath) {
     // check in parent folder
     let dimensions = getPathDimentions(Key); // ex. /100x100/
     Key = Key.replace(dimensions, '/'); // replaces /100x100/ => /
+    if (Key.startsWith('/')) Key = Key.substring(1);
     config.extensionsToCheck.forEach((extension) => {
         filePathsToCheck.push(`${Key.split('.')[0]}${extension}`);
     });
@@ -151,6 +152,7 @@ exports.resizer = async (url) => {
         }
 
         let fileSourcePath = await getSourceImagePath(s3, bucket, key);
+        console.log(fileSourcePath);
         if (!fileSourcePath) {
             return ''; // No usable source found
         }

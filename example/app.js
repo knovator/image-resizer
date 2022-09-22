@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const PORT = 8080;
+const { resizer } = require('./s3');
 const { resize } = require('../.');
 
 app.get('/status', (_req, res) => {
