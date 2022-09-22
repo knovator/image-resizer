@@ -1,0 +1,15 @@
+{
+  "name": "lambda-resize-API",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "chavda-bhavik",
+  "license": "MIT",
+  "scripts": {
+    "delete-file": "rm -fr function.zip",
+    "zip": "zip -r function.zip .",
+    "build": "yarn run delete-file && yarn run zip"
+  },
+  "dependencies": {
+    "sharp": "^0.31.0"
+  }
+}

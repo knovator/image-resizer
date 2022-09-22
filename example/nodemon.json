@@ -1,3 +1,4 @@
 {
-    "watch": ["app.js", "../dist/"]
+    "watch": ["app.js", "s3", "../dist/"],
+    "ext": "js,ts,json,html"
 }
