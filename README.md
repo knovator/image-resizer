@@ -122,12 +122,20 @@ app.listen(PORT, () => {
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+## Usecases
 
+`@knovator/image-resizer` is built to generate images of different resolution and format. It can be used in following usecases:
+
+- Generate images of different resolution like `600x600`, `1280x720`, `1920x1080` etc.
+- Generate images of different formats like `webp`, `png`, `jpg` etc.
+- Doing image transformation on the basis of requests.
+- Serving and transforming images from local folder.
+
+If you have any other usecase, please open an issue with tag `usecase`. We will try to add it in our roadmap.
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Support for image hosted in s3 bucket
 - [ ] Add test cases
 
 See the [open issues](https://github.com/knovator/image-resizer/issues) for a full list of proposed features (and known issues).
